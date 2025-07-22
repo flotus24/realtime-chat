@@ -65,7 +65,6 @@ const ChatContainer: React.FC<ChatContainerProps> = ({
     // Check if input only contains spaces
     if (!/^\s*$/.test(newMessage)) {
       socket.emit("newMessage", newMessage, selected);
-      console.log(selected);
       setNewMessage("");
       findContact();
     }

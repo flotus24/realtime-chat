@@ -5,12 +5,6 @@ import ChatContact from "@/components/ChatContact";
 import ChatContainer from "@/components/ChatContainer";
 import { WebsocketProvider, socket } from "@/contexts/WebsocketContext";
 import { useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
-
-type Contact = {
-  userID: number;
-  username: string;
-};
 
 interface ChatRooms {
   fromUserID: number | null;
@@ -26,7 +20,6 @@ interface Content {
 
 const Chat = () => {
   const router = useRouter();
-  const token = localStorage.getItem("jwtToken");
   const [showPage, setShowPage] = useState<boolean>(false);
   const [selected, setSelected] = useState<ChatRooms | null>(null);
   const [chatRooms, setChatRooms] = useState<ChatRooms[]>([]);
@@ -68,6 +61,8 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    //check to see if it's on client side
+    const token = localStorage.getItem("jwtToken");
     const authorization = async () => {
       try {
         const response = await fetch("http://localhost:3001/auth/me", {
@@ -88,7 +83,7 @@ const Chat = () => {
     };
 
     authorization();
-  });
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-50">

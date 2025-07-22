@@ -96,7 +96,6 @@ const ChatContact: React.FC<ChatContactProps> = ({
         };
         handleChatRooms(chatRoom);
       }
-      console.log(chatRooms);
     }
   }, [contacts]);
 
