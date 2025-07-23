@@ -8,8 +8,8 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [showLogin, setShowLogin] = useState<boolean>(true);
   const [showSignup, setShowSignup] = useState<boolean>(false);
-  const [showChat, setShowChat] = useState<boolean>(false);
   const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [showDialogSuccess, setShowDialogSuccess] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -33,6 +33,7 @@ const Login = () => {
       if (response.status === 401) {
         // throw new Error(`HTTP error! status: ${response.status}`);
         setShowDialog(true);
+        setShowDialogSuccess(false);
       } else if (response.status === 200) {
         const data = await response.json();
         const jwtToken = data.accessToken;
@@ -80,10 +81,13 @@ const Login = () => {
       if (response.status === 422) {
         // throw new Error(`HTTP error! status: ${response.status}`);
         setShowDialog(true);
-      } else if (response.status === 200) {
+      } else if (response.status === 201) {
         setShowLogin(true);
+        setShowDialog(true);
+        setShowDialogSuccess(true);
         setShowSignup(false);
       }
+      console.log(response.status);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -101,12 +105,25 @@ const Login = () => {
             <hr className="border-[1.5px] border-gray-100 mx-8" />
             {showDialog ? (
               <div>
-                <div className="text-center text-red-600 mt-2">
-                  Wrong Username or Password
-                </div>
-                <div className="ml-4 mt-2">
-                  <label htmlFor="username">Username</label>
-                </div>
+                {showDialogSuccess ? (
+                  <>
+                    <div className="text-center text-green-600 mt-2">
+                      Signup Successful! Try to Login
+                    </div>
+                    <div className="ml-4 mt-2">
+                      <label htmlFor="username">Username</label>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-center text-red-600 mt-2">
+                      Wrong Username or Password
+                    </div>
+                    <div className="ml-4 mt-2">
+                      <label htmlFor="username">Username</label>
+                    </div>
+                  </>
+                )}
               </div>
             ) : (
               <div className="ml-4 mt-4">
@@ -226,7 +243,6 @@ const Login = () => {
           </div>
         )}
       </div>
-      {showChat && <div className="relative"></div>}
     </div>
   );
 };
