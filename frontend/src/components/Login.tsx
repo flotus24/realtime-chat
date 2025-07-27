@@ -25,11 +25,14 @@ const Login = () => {
         username: username,
         password: password,
       };
-      const response = await fetch("http://localhost:3001/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
       if (response.status === 401) {
         // throw new Error(`HTTP error! status: ${response.status}`);
         setShowDialog(true);
@@ -48,7 +51,7 @@ const Login = () => {
           localStorage.setItem("jwtToken", jwtToken);
           localStorage.setItem("username", username);
           localStorage.setItem("userID", userID);
-          console.log("JWT Token stored in localStorage. user ID = ", userID);
+          console.log("JWT Token stored in localStorage");
 
           router.push("/chat");
         } else {
@@ -72,7 +75,7 @@ const Login = () => {
         username: username,
         password: password,
       };
-      const response = await fetch("http://localhost:3001/users", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

@@ -61,17 +61,19 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    //check to see if it's on client side
     const token = localStorage.getItem("jwtToken");
     const authorization = async () => {
       try {
-        const response = await fetch("http://localhost:3001/auth/me", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/auth/me`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.status === 401) {
           router.push("/");
         } else if (response.status === 200) {
