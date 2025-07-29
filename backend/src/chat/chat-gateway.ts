@@ -9,7 +9,7 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000'],
+    origin: [process.env.DOMAIN],
   },
   connectionStateRecovery: {
     maxDisconnectionDuration: 5 * 60 * 1000, // 5 minutes
