@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { io, Socket } from "socket.io-client";
 
-export const socket = io(`${process.env.NEXT_PUBLIC_DOMAIN}`, {
+export const socket = io(`${process.env.NEXT_PUBLIC_SOCKET}`, {
   autoConnect: false,
 }); // variable you want to share
 export const WebsocketContext = createContext<Socket>(socket); // create a context for that variable
