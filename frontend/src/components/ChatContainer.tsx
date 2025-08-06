@@ -7,12 +7,8 @@ import { ChatMessageList } from "./ui/chat/chat-message-list";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { ChatBubble, ChatBubbleMessage } from "./ui/chat/chat-bubble";
 import { v4 as uuidv4 } from "uuid";
-
-interface ChatRooms {
-  fromUserID: number | null;
-  username: string;
-  content: Content[];
-}
+import ChatRoomsContext from "@/contexts/ChatRoomsContext";
+import SelectedRoomContext from "@/contexts/SelectedRoomContext";
 
 interface Content {
   id: string;
@@ -20,21 +16,13 @@ interface Content {
   fromSelf: boolean;
 }
 
-interface ChatContainerProps {
-  selected: ChatRooms | null;
-  chatRooms: ChatRooms[];
-  updateMessage: (chatRoom: Content, ID: number) => void;
-}
-
-const ChatContainer: React.FC<ChatContainerProps> = ({
-  selected,
-  chatRooms,
-  updateMessage,
-}) => {
+const ChatContainer = () => {
+  const { chatRooms, updateMessage } = useContext(ChatRoomsContext);
+  const { selected } = useContext(SelectedRoomContext);
+  const socket = useContext(WebsocketContext);
   const [newMessage, setNewMessage] = useState<string>("");
   const [newContent, setNewContent] = useState<Content | null>(null);
   const [fromUserID, setFromUserID] = useState<number>(0);
-  const socket = useContext(WebsocketContext);
 
   // First step of receiving new Message
   useEffect(() => {

@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { WebsocketContext } from "@/contexts/WebsocketContext";
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "./ui/scroll-area";
+import ChatRoomsContext from "@/contexts/ChatRoomsContext";
+import SelectedRoomContext from "@/contexts/SelectedRoomContext";
 // import { cn } from "@/lib/utils";
 // import { LogOut } from "lucide-react";
 // import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
@@ -15,33 +17,10 @@ type Contact = {
   username: string;
 };
 
-interface ChatRooms {
-  fromUserID: number | null;
-  username: string;
-  content: Content[];
-}
-
-interface Content {
-  id: string;
-  messages: string;
-  fromSelf: boolean;
-}
-
-interface ChatContactProps {
-  handleSelected: (user: ChatRooms) => void;
-  handleChatRooms: (chatRoom: ChatRooms) => void;
-  chatRooms: ChatRooms[];
-  selected: ChatRooms | null;
-  // Add other props here if needed
-}
-
-const ChatContact: React.FC<ChatContactProps> = ({
-  handleSelected,
-  handleChatRooms,
-  chatRooms,
-  selected,
-}) => {
+const ChatContact = () => {
   const router = useRouter();
+  const { chatRooms, handleChatRooms } = useContext(ChatRoomsContext);
+  const { selected, handleSelected } = useContext(SelectedRoomContext);
   const socket = useContext(WebsocketContext);
   const username = localStorage.getItem("username");
   const [contacts, setContacts] = useState<Contact[]>([]);
